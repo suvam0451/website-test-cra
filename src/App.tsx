@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from 'react';
 import logo from './logo.svg';
-import { Provider, connect } from "react-redux"
+import { Provider, useDispatch, useSelector } from "react-redux"
+import { INotesState, ICountReducerAction, ENotesReducerAction, ECountReducerAction } from "./redux/store"
 
 import './App.css';
 
@@ -32,8 +33,12 @@ const Counter = ({ addNote }: ICounter) => {
 }
 
 const MainApp = () => {
+  const notes = useSelector<INotesState, INotesState["notes"]>((state) => state.notes)
+  const dispatch = useDispatch()
+
   const onAddNote = (str: string) => {
-    console.log(str);
+    console.log(notes);
+    dispatch({ type: ENotesReducerAction.ADD, payload: str })
   }
 
   return <div className="App">
@@ -43,6 +48,11 @@ const MainApp = () => {
         Edit <code>src/App.js</code> and save to reload.
     </p>
       <Counter addNote={onAddNote} />
+      <ul>
+        {notes.map((note, i) => {
+          return <li key={i}>{note}</li>
+        })}
+      </ul>
       <a
         className="App-link"
         href="https://reactjs.org"
@@ -55,15 +65,13 @@ const MainApp = () => {
   </div>
 }
 
-// first () binds redux store.
-const Container = connect()(MainApp)
 
 function App() {
   return (
-    <Container />
+    <MainApp />
   );
 }
 
 
 
-export default App;
+export default MainApp;

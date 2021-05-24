@@ -1,43 +1,51 @@
 import { createStore } from "redux"
 import produce from "immer"
 
-enum ECountReducerAction {
-    INCREMENT,
-    DECREMENT
+export enum ECountReducerAction {
+    INCREMENT = "COUNT_INCREMENT",
+    DECREMENT = "COUNT_DECREMENT"
 }
 
-enum ENotesReducerAction {
-    ADD,
-    REMOVE
+export enum ENotesReducerAction {
+    ADD = "NOTES_INCREMENT",
+    REMOVE = "NOTES_DECREMENT"
 }
 
-type ICountReducerAction = {
+export type ICountReducerAction = {
     type: ECountReducerAction | ENotesReducerAction,
     payload: any
 }
 
-type IState = {
+export type INotesState = {
     num: number
     notes: string[]
 }
 
-const countReducer = produce((state: IState, action: ICountReducerAction) => {
+const countReducer = produce((state: INotesState, action: ICountReducerAction) => {
+    // console.log(state);
+    // console.log(action)
+
     const { type, payload } = action
+    // console.log(type)
     switch (type) {
         case ECountReducerAction.INCREMENT:
+            console.log("Count increment got called")
             state.num += 1;
             break;
         case ECountReducerAction.DECREMENT:
+            console.log("Count decrement got called")
             state.num -= 1;
             break;
         case ENotesReducerAction.ADD:
+            console.log("Notes append got called")
             state.notes.push(payload)
             break;
         case ENotesReducerAction.REMOVE:
+            console.log("Notes deletion got called")
             break;
         default:
             return state;
     }
 }, { num: 0, notes: [] });
 
-export default createStore(countReducer)
+export const store = createStore(countReducer)
