@@ -6,20 +6,38 @@ enum ECountReducerAction {
     DECREMENT
 }
 
-type ICountReducerAction = {
-    type: ECountReducerAction,
+enum ENotesReducerAction {
+    ADD,
+    REMOVE
 }
 
-const countReducer = produce((state: number, action: ICountReducerAction) => {
-    const { type } = action
+type ICountReducerAction = {
+    type: ECountReducerAction | ENotesReducerAction,
+    payload: any
+}
+
+type IState = {
+    num: number
+    notes: string[]
+}
+
+const countReducer = produce((state: IState, action: ICountReducerAction) => {
+    const { type, payload } = action
     switch (type) {
         case ECountReducerAction.INCREMENT:
-            return state + 1;
+            state.num += 1;
+            break;
         case ECountReducerAction.DECREMENT:
-            return state - 1;
+            state.num -= 1;
+            break;
+        case ENotesReducerAction.ADD:
+            state.notes.push(payload)
+            break;
+        case ENotesReducerAction.REMOVE:
+            break;
         default:
             return state;
     }
-}, 0);
+}, { num: 0, notes: [] });
 
 export default createStore(countReducer)
