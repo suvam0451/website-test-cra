@@ -1,0 +1,11 @@
+{
+  "folders": [
+    {
+      "name": "Create React App",
+      "path": "."
+    }
+  ],
+  "settings": {
+      "editor.formatOnSave": true
+  }
+}
